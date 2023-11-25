@@ -74,7 +74,25 @@ void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadistic
 			}
 		}
 	}
-	//Burbuja
+	int pasada, posicion;
+	char aux[TAMTOKEN];
+	int auxEstadisticas;
+
+	for (pasada = 0; pasada < iNumElementos - 1; pasada++) {
+		for (posicion = 0; posicion < iNumElementos - 1; posicion++) {
+			if (strcmp(szPalabras[posicion], szPalabras[posicion + 1]) > 0) {
+				// orden de palabras
+				strcpy_s(aux, szPalabras[posicion]);
+				strcpy_s(szPalabras[posicion], szPalabras[posicion + 1]);
+				strcpy_s(szPalabras[posicion + 1], aux);
+
+				// Estadisticas 
+				auxEstadisticas = iEstadisticas[posicion];
+				iEstadisticas[posicion] = iEstadisticas[posicion + 1];
+				iEstadisticas[posicion + 1] = auxEstadisticas;
+			}
+		}
+	}
 
 	fclose(fp);
 }
