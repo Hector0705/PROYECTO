@@ -41,9 +41,12 @@ void	Diccionario(char* szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[
             if (linea[i] != ' ' && linea[i] != '(' && linea[i] != ')' && linea[i] != ',' &&
                 linea[i] != ';' && linea[i] != '.' &&
                 linea[i] != '*' && linea[i] != '}' &&
-                linea[i] != '\n' && linea[i] != '>' && linea[i] != '<') {
+                linea[i] != '\n' &&
+                linea[i] != '>' && linea[i] != '<') {
                 palabra[a] = linea[i];
                 a++;
+
+
             }
             else if (a > 0) {
                 palabra[a] = '\0';
@@ -65,13 +68,12 @@ void	Diccionario(char* szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[
                     iEstadisticas[iNumElementos] = 1;
                     iNumElementos++;
                     contadorU++;
-
                 }
-
                 a = 0;
             }
         }
     }
+    //Burbujazo
     int pasada, posicion;
     char aux[TAMTOKEN];
     int auxEstadisticas;
@@ -92,6 +94,7 @@ void	Diccionario(char* szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[
         }
     }
     fclose(fp);
+
 }
 
 
@@ -107,7 +110,7 @@ void	Diccionario(char* szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[
     int		iPeso[],							//Peso de las palabras en la lista final
     int &	iNumLista)							//Numero de elementos en la szListaFinal
 ******************************************************************************************************************/
-void coarre(char szpalabraleida[NUMPALABRAS][TAMTOKEN], char aux[TAMTOKEN], int fila)
+void coparre(char szpalabraleida[NUMPALABRAS][TAMTOKEN], char aux[TAMTOKEN], int fila)
 {
     int i;
     for (i = 0; szpalabraleida[fila][i] != '\0', i++;)
@@ -117,19 +120,17 @@ void coarre(char szpalabraleida[NUMPALABRAS][TAMTOKEN], char aux[TAMTOKEN], int 
     aux[i] = '\0';
 
 }
+
 void	ListaCandidatas(
-    char	szPalabrasSugeridas[][TAMTOKEN],	//Lista de palabras clonadas
+    char	szPalabrasSugeridas[NUMPALABRAS][TAMTOKEN],	//Lista de palabras clonadas
     int		iNumSugeridas,						//Lista de palabras clonadas
-    char	szPalabras[][TAMTOKEN],				//Lista de palabras del diccionario
+    char	szPalabras[NUMPALABRAS][TAMTOKEN],				//Lista de palabras del diccionario
     int		iEstadisticas[],					//Lista de las frecuencias de las palabras
     int		iNumElementos,						//Numero de elementos en el diccionario
-    char	szListaFinal[][TAMTOKEN],			//Lista final de palabras a sugerir
+    char	szListaFinal[NUMPALABRAS][TAMTOKEN],			//Lista final de palabras a sugerir
     int		iPeso[],							//Peso de las palabras en la lista final
     int& iNumLista)							//Numero de elementos en la szListaFinal
 {
-
-
-
 
 }
 /*****************************************************************************************************************
@@ -139,22 +140,38 @@ void	ListaCandidatas(
     int &	iNumSugeridas)						//Numero de elementos en la lista
 ******************************************************************************************************************/
 
+void CopiaDePalab(
+    char szPalabrasSugeridas[][TAMTOKEN], // Lista de palabras clonadas
+    int iNumSugeridas,                    // N?mero de elementos en la lista
+    char szPalabrasCopia[][TAMTOKEN],     // Nuevo arreglo de arreglos (destino)
+    int& iNumCopia)                       // N?mero de elementos en la nueva lista (se actualizar?)
+{
+    iNumCopia = 0;
+
+    for (int i = 0; i < iNumSugeridas; ++i)
+    {
+        strcpy_s(szPalabrasCopia[i], szPalabrasSugeridas[i]);
+        iNumCopia++;
+    }
+}
+
+
 void	ClonaPalabras(
     char* szPalabraLeida,						// Palabra a clonar
     char	szPalabrasSugeridas[][TAMTOKEN],//Lista de palabras clonadas
     int& iNumSugeridas)						//Numero de elementos en la lista
 {
-    char	szPalabras[3300][TAMTOKEN];
+    char	Palabras[3300][TAMTOKEN];
     char aux[TAMTOKEN];
     int i;
     int j = 0;
     iNumSugeridas = 0;
     int pasadas = 0;
-    char letrasaz[TAMTOKEN] = "abcdefghijklmn�opqrstuvwxyz�����";
+    char letrasaz[TAMTOKEN] = "abcdefghijklmnñopqrstuvwxyzáéíóú";
     int longiP = strlen(szPalabraLeida);
     int contador = 0;
 
-    for (i = 0; i < longiP; i++)
+    for (i = 0; i <= longiP; i++)
     {
         aux[i] = szPalabraLeida[i];
     }
@@ -162,7 +179,7 @@ void	ClonaPalabras(
 
     for (pasadas = 0; pasadas <= longiP; pasadas++)
     {
-        strcpy_s(szPalabras[iNumSugeridas], szPalabraLeida);
+        strcpy_s(szPalabraLeida, TAMTOKEN, aux);
         for (i = 0; i <= longiP; i++)
         {
             if (i != pasadas)
@@ -171,13 +188,13 @@ void	ClonaPalabras(
                 j++;
             }
         }
-        szPalabraLeida[i] = '\0';
-        strcpy_s(szPalabras[iNumSugeridas], szPalabraLeida);
+        szPalabraLeida[i + 1] = '\0';
+        strcpy_s(Palabras[iNumSugeridas], szPalabraLeida);
         iNumSugeridas++;
         j = 0;
     }
 
-    for (j = 0; j <= strlen(szPalabraLeida); j = j + 1)
+    for (j = 0; j < strlen(szPalabraLeida); j = j + 1)
     {
         if ((szPalabraLeida[j + 1]) == '\0')
         {
@@ -186,30 +203,33 @@ void	ClonaPalabras(
         }
         else
         {
+            strcpy_s(szPalabraLeida, TAMTOKEN, aux);
             szPalabraLeida[j] = aux[j + 1];
             szPalabraLeida[j + 1] = aux[j];
-            strcpy_s(szPalabras[iNumSugeridas], TAMTOKEN, szPalabraLeida);
+            strcpy_s(Palabras[iNumSugeridas], szPalabraLeida);
             iNumSugeridas++;
             contador++;
         }
-
     }
-    //letra del abecedario en palabra
+
     for (pasadas = 0; pasadas < strlen(szPalabraLeida); pasadas++)
     {
+
         strcpy_s(szPalabraLeida, TAMTOKEN, aux);
         for (i = 0; i < strlen(letrasaz); i++)
         {
             strcpy_s(szPalabraLeida, TAMTOKEN, aux);
             szPalabraLeida[pasadas] = letrasaz[i];
             szPalabraLeida[j + 1] = '\0';
-            strcpy_s(szPalabras[iNumSugeridas], szPalabraLeida);
+            strcpy_s(Palabras[iNumSugeridas], szPalabraLeida);
             iNumSugeridas++;
+
         }
     }
-    //letra del abecedario en espacios
+
     for (pasadas = 0; pasadas < strlen(szPalabraLeida); pasadas++)
     {
+
         for (j = 0; j < strlen(letrasaz); j++)
         {
             int a = 0;
@@ -226,27 +246,27 @@ void	ClonaPalabras(
                 {
                     szPalabraLeida[i] = letrasaz[j];
                 }
-
-
             }
             szPalabraLeida[strlen(szPalabraLeida) + 1] = '\0';
-            strcpy_s(szPalabras[iNumSugeridas], szPalabraLeida);
+            strcpy_s(Palabras[iNumSugeridas], szPalabraLeida);
             iNumSugeridas++;
         }
     }
     //Ordenar las palabas
-    for (int pasada = 0; pasada < iNumSugeridas - 1; pasada++) {
-        for (int posicion = 0; posicion < iNumSugeridas - 1; posicion++) {
-            if (strcmp(szPalabras[posicion], szPalabras[posicion + 1]) > 0) {
-                // Ordena las palabras
-                strcpy_s(aux, szPalabras[posicion]);
-                strcpy_s(szPalabras[posicion], szPalabras[posicion + 1]);
-                strcpy_s(szPalabras[posicion + 1], aux);
+    int pasada, posicion;
+    char auxOrden[TAMTOKEN];
+
+    for (pasada = 0; pasada < iNumSugeridas - 1; pasada++) {
+        for (posicion = 0; posicion < iNumSugeridas - 1; posicion++) {
+            if (strcmp(Palabras[posicion], Palabras[posicion + 1]) > 0) {
+
+                strcpy_s(auxOrden, Palabras[posicion]);
+                strcpy_s(Palabras[posicion], Palabras[posicion + 1]);
+                strcpy_s(Palabras[posicion + 1], auxOrden);
+
             }
         }
     }
     // Copiar las palabras ordenadas a szPalabrasSugeridas
-    for (int i = 0; i < iNumSugeridas; ++i) {
-        strcpy_s(szPalabrasSugeridas[i], TAMTOKEN, szPalabras[i]);
-    }
+    CopiaDePalab(Palabras, iNumSugeridas, szPalabrasSugeridas, iNumSugeridas);
 }
