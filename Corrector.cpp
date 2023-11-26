@@ -198,5 +198,22 @@ void	ClonaPalabras(
         }
 
     }
+    //letra del abecedario en palabra
+    for (pasadas = 0; pasadas < strlen(szPalabraLeida); pasadas++)
+    {
+
+        copiar(szPalabraLeida, aux);
+        for (i = 0; i < strlen(letrasaz); i++)
+        {
+            copiar(szPalabraLeida, aux);
+            szPalabraLeida[pasadas] = letrasaz[i];
+            szPalabraLeida[j + 1] = '\0';
+            strcpy_s(szPalabras[iNumSugeridas], szPalabraLeida);
+            iNumSugeridas++;
+
+        }
+
+
+    }
     
 }
