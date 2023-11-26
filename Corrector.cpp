@@ -177,4 +177,26 @@ void	ClonaPalabras(
         iNumSugeridas++;
         j = 0;
     }
+    //cambia de posicion las palabras
+    for (j = 0; j <= strlen(szPalabraLeida); j = j + 1)
+    {
+
+        if ((szPalabraLeida[j + 1]) == '\0')
+        {
+
+            j++;
+            break;
+        }
+        else
+        {
+            copiar(szPalabraLeida, aux);
+            szPalabraLeida[j] = aux[j + 1];
+            szPalabraLeida[j + 1] = aux[j];
+            strcpy_s(szPalabras[iNumSugeridas], szPalabraLeida);
+            iNumSugeridas++;
+            contador++;
+        }
+
+    }
+    
 }
