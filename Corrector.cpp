@@ -51,10 +51,10 @@ void Diccionario(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[
 				palabra[a] = '\0';
 				_strlwr_s(palabra);
 				//busca si se repite 
-				int repetida = 0;
+				int pRep = 0;
 				for (int j = 0; j < iNumElementos; j++) {
 					if (strcmp(szPalabras[j], palabra) == 0) {
-						repetida = 1;
+						pRep = 1;
 						iEstadisticas[j]++;
 						contadorUnic++;
 						break;
@@ -62,7 +62,7 @@ void Diccionario(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[
 				}
 
 
-				if (!repetida) {
+				if (!pRep) {
 					strcpy_s(szPalabras[iNumElementos], palabra);
 					iEstadisticas[iNumElementos] = 1;
 					iNumElementos++;
@@ -142,5 +142,39 @@ void	ClonaPalabras(
     char	szPalabrasSugeridas[][TAMTOKEN],//Lista de palabras clonadas
     int& iNumSugeridas)						//Numero de elementos en la lista
 {
+    char	szPalabras[3300][TAMTOKEN];
+    char aux[TAMTOKEN];
+    int i;
+    int j = 0;
+    iNumSugeridas = 0;
+    int pasadas = 0;
+    char letrasaz[TAMTOKEN] = "abcdefghijklmnñopqrstuvwxyzáéíóú";
+    int longiP = strlen(szPalabraLeida);
+    int contador = 0;
 
+    for (i = 0; i < longiP; i++)
+    {
+        aux[i] = szPalabraLeida[i];
+    }
+    aux[i] = '\0';
+    //elimina una letra
+    for (pasadas = 0; pasadas <= longiP; pasadas++)
+    {
+
+        copiar(szPalabraLeida, aux);
+        for (i = 0; i <= longiP; i++)
+        {
+            if (i != pasadas)
+            {
+                szPalabraLeida[j] = aux[i];
+                j++;
+            }
+
+
+        }
+        szPalabraLeida[i] = '\0';
+        strcpy_s(szPalabras[iNumSugeridas], szPalabraLeida);
+        iNumSugeridas++;
+        j = 0;
+    }
 }
