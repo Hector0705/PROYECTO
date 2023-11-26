@@ -257,4 +257,8 @@ void	ClonaPalabras(
             }
         }
     }
+    // Copiar las palabras ordenadas a szPalabrasSugeridas
+    for (int i = 0; i < iNumSugeridas; ++i) {
+        copiar(szPalabrasSugeridas[i], szPalabras[i]);
+    }
 }
