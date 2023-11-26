@@ -215,5 +215,35 @@ void	ClonaPalabras(
 
 
     }
-    
+    //letra del abecedario en un espacio
+    for (pasadas = 0; pasadas < strlen(szPalabraLeida); pasadas++)
+    {
+
+        for (j = 0; j < strlen(letrasaz); j++)
+        {
+            int a = 0;
+
+            copiar(szPalabraLeida, aux);
+
+            for (i = 0; i < strlen(szPalabraLeida) + 1; i++)
+            {
+                if (i != pasadas)
+                {
+                    szPalabraLeida[i] = aux[a];
+                    a++;
+                }
+                else
+                {
+                    szPalabraLeida[i] = letrasaz[j];
+                }
+
+
+            }
+            szPalabraLeida[strlen(szPalabraLeida) + 1] = '\0';
+            strcpy_s(szPalabras[iNumSugeridas], szPalabraLeida);
+            iNumSugeridas++;
+        }
+
+
+    }
 }
