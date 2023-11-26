@@ -246,4 +246,15 @@ void	ClonaPalabras(
 
 
     }
+    // Ordenar
+    for (int pasada = 0; pasada < iNumSugeridas - 1; pasada++) {
+        for (int posicion = 0; posicion < iNumSugeridas - 1; posicion++) {
+            if (strcmp(szPalabras[posicion], szPalabras[posicion + 1]) > 0) {
+                // Ordena las palabras
+                strcpy_s(aux, szPalabras[posicion]);
+                strcpy_s(szPalabras[posicion], szPalabras[posicion + 1]);
+                strcpy_s(szPalabras[posicion + 1], aux);
+            }
+        }
+    }
 }
